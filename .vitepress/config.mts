@@ -212,12 +212,22 @@ export default defineConfig({
   vite: {
     plugins: [
       // LLM-friendly docs: generates llms.txt, llms-full.txt and per-page
-      // Markdown copies into the build output. The site is translated into 9
-      // locales; per the plugin's recommendation only English is emitted for
-      // LLMs (workDir: 'en'), so the bundle stays single-language.
+      // Markdown copies into the build output. Work from the site root so
+      // generated URLs keep the /en/ prefix (workDir: 'en' would strip it and
+      // emit dead /docs/... links). Per the plugin's recommendation for
+      // multi-language sites only English is emitted; other locales and
+      // repo-only files are filtered out below.
       llmstxt({
         domain: 'https://true-async.github.io',
-        workDir: 'en',
+        workDir: '.',
+        ignoreFiles: [
+          'ru/**', 'de/**', 'fr/**', 'es/**', 'it/**', 'uk/**', 'zh/**', 'ko/**',
+          'vitepress-docs/ru-docs.md', 'vitepress-docs/de-docs.md',
+          'vitepress-docs/es-docs.md', 'vitepress-docs/fr-docs.md',
+          'vitepress-docs/it-docs.md', 'vitepress-docs/ko-docs.md',
+          'vitepress-docs/uk-docs.md', 'vitepress-docs/zh-docs.md',
+          'en/index.md', 'README.md', 'CHANGELOG.md', 'docs/**',
+        ],
         generateLLMsTxt: true,
         generateLLMsFullTxt: true,
         generateLLMFriendlyDocsForEachPage: true,
@@ -225,7 +235,7 @@ export default defineConfig({
         injectLLMHint: true,
         customLLMsTxtTemplate: `# {title}
 
-> {description}
+{description}
 
 {details}
 
