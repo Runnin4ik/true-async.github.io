@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import llmstxt from 'vitepress-plugin-llms'
 import { readdirSync, statSync, existsSync } from 'node:fs'
 import { join, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -209,6 +210,36 @@ export default defineConfig({
   },
 
   vite: {
+    plugins: [
+      // LLM-friendly docs: generates llms.txt, llms-full.txt and per-page
+      // Markdown copies into the build output. The site is translated into 9
+      // locales; per the plugin's recommendation only English is emitted for
+      // LLMs (workDir: 'en'), so the bundle stays single-language.
+      llmstxt({
+        domain: 'https://true-async.github.io',
+        workDir: 'en',
+        generateLLMsTxt: true,
+        generateLLMsFullTxt: true,
+        generateLLMFriendlyDocsForEachPage: true,
+        stripHTML: true,
+        injectLLMHint: true,
+        customLLMsTxtTemplate: `# {title}
+
+> {description}
+
+{details}
+
+## Table of Contents
+
+{toc}
+`,
+        customTemplateVariables: {
+          title: 'TrueAsync Documentation',
+          description:
+            'Native async/await for PHP: coroutines, structured concurrency, channels, connection pooling — built into the language core.',
+        },
+      }),
+    ],
     css: {
       // Use the modern Dart Sass compiler API (silences the legacy-js-api
       // deprecation warning emitted when SCSS partials are compiled).
