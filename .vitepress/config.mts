@@ -112,9 +112,6 @@ export default defineConfig({
     // English landing at /en/ is identical (same HomePage hero + lang switcher),
     // so redirect the bare root there and make search work everywhere.
     ['script', {}, "(function(){if(location.pathname==='/'||location.pathname==='/index.html'){location.replace('/en/');}})();"],
-    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
-    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
-    ['link', { href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap', rel: 'stylesheet' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/assets/favicon.svg' }],
     ['link', { rel: 'icon', type: 'image/x-icon', href: '/assets/favicon.ico', sizes: '16x16 32x32 48x48' }],
     ['link', { rel: 'icon', type: 'image/png', href: '/assets/favicon.png' }],
