@@ -107,6 +107,11 @@ export default defineConfig({
     // Apply the saved/system theme synchronously, before first paint, so the
     // page never flashes light-then-dark on reload (no FOUC).
     ['script', {}, "(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();"],
+    // The root locale has no indexed pages of its own (all content lives under
+    // /en/, /ru/, ...), so VitePress' local search finds nothing on "/". The
+    // English landing at /en/ is identical (same HomePage hero + lang switcher),
+    // so redirect the bare root there and make search work everywhere.
+    ['script', {}, "(function(){if(location.pathname==='/'||location.pathname==='/index.html'){location.replace('/en/');}})();"],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     ['link', { href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap', rel: 'stylesheet' }],
